@@ -1,7 +1,8 @@
 using Discount.API.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-
+using Common.Logging;
+using Serilog;
 namespace Discount.API
 {
     public class Program
@@ -15,6 +16,8 @@ namespace Discount.API
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                        .UseSerilog(Serilogger.Configure)
+
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();

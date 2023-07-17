@@ -21,7 +21,8 @@
         "pgadmin": "StartWithoutDebugging",
         "portainer": "StartWithoutDebugging",
         "rabbitmq": "StartWithoutDebugging",
-        "shopping.aggregator": "StartDebugging"
+        "shopping.aggregator": "StartDebugging",
+        "webstatus": "StartDebugging"
       }
     }
   }

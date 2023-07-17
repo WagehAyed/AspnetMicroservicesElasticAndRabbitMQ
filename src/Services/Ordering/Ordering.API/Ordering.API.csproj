@@ -21,8 +21,7 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.1" />
   </ItemGroup>
 
-  <ItemGroup>
-     <ProjectReference Include="..\..\..\..\Common.Logging\Common.Logging.csproj" />
+  <ItemGroup> 
      <ProjectReference Include="..\..\..\BuildingBlocks\Common.Logging\Common.Logging.csproj" />
      <ProjectReference Include="..\..\..\BuildingBlocks\EventBus.Messages\EventBus.Messages.csproj" />
     <ProjectReference Include="..\Ordering.Application\Ordering.Application.csproj" />

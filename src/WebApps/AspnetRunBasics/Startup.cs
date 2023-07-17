@@ -25,13 +25,19 @@ namespace AspnetRunBasics
 
             services.AddHttpClient<ICatalogService, CatalogService>(c =>
                 c.BaseAddress = new Uri(Configuration["ApiSettings:GatewayAddress"]))
-                .AddHttpMessageHandler<LoggingDelegatingHandler>();
+                .AddHttpMessageHandler<LoggingDelegatingHandler>()
+                .AddPolicyHandler(RetryAndCircuitBreakerPolicy.GetRetryPolicy())
+                .AddPolicyHandler(RetryAndCircuitBreakerPolicy.GetCircuitBreakerPolicy());
             services.AddHttpClient<IBasketService, BasketService>(c =>
                 c.BaseAddress = new Uri(Configuration["ApiSettings:GatewayAddress"]))
-                .AddHttpMessageHandler<LoggingDelegatingHandler>();
+                .AddHttpMessageHandler<LoggingDelegatingHandler>()
+                .AddPolicyHandler(RetryAndCircuitBreakerPolicy.GetRetryPolicy())
+                .AddPolicyHandler(RetryAndCircuitBreakerPolicy.GetCircuitBreakerPolicy());
             services.AddHttpClient<IOrderService, OrderService>(c =>
                 c.BaseAddress = new Uri(Configuration["ApiSettings:GatewayAddress"]))
-                .AddHttpMessageHandler<LoggingDelegatingHandler>();
+                .AddHttpMessageHandler<LoggingDelegatingHandler>()
+                .AddPolicyHandler(RetryAndCircuitBreakerPolicy.GetRetryPolicy())
+                .AddPolicyHandler(RetryAndCircuitBreakerPolicy.GetCircuitBreakerPolicy());
 
             services.AddRazorPages();
         }

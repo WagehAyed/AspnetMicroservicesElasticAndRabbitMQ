@@ -7,10 +7,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Polly;
+using Polly.Extensions.Http;
+using Serilog;
 using Shopping.Aggregator.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Shopping.Aggregator
@@ -31,17 +35,25 @@ namespace Shopping.Aggregator
 
             services.AddHttpClient<ICatalogService, CatalogService>(c =>
                 c.BaseAddress = new Uri(Configuration["ApiSettings:CatalogUrl"]))
-                .AddHttpMessageHandler<LoggingDelegatingHandler>();
+                .AddHttpMessageHandler<LoggingDelegatingHandler>()
+                .AddPolicyHandler(RetryAndCircuitBreakerPolicy.GetRetryPolicy())
+                .AddPolicyHandler(RetryAndCircuitBreakerPolicy.GetCircuitBreakerPolicy());
 
 
             services.AddHttpClient<IBasketService, BasketService>(c =>
                 c.BaseAddress = new Uri(Configuration["ApiSettings:BasketUrl"]))
-                .AddHttpMessageHandler<LoggingDelegatingHandler>();
+                .AddHttpMessageHandler<LoggingDelegatingHandler>()
+                .AddPolicyHandler(RetryAndCircuitBreakerPolicy.GetRetryPolicy())
+                .AddPolicyHandler(RetryAndCircuitBreakerPolicy.GetCircuitBreakerPolicy()); 
+            //.AddTransientHttpErrorPolicy(policy => policy.WaitAndRetryAsync(3, _ => TimeSpan.FromSeconds(2)))
+            //.AddTransientHttpErrorPolicy(policy => policy.CircuitBreakerAsync(5,  TimeSpan.FromSeconds(30)));
 
 
             services.AddHttpClient<IOrderService, OrderService>(c =>
                 c.BaseAddress = new Uri(Configuration["ApiSettings:OrderingUrl"]))
-                .AddHttpMessageHandler<LoggingDelegatingHandler>();
+                .AddHttpMessageHandler<LoggingDelegatingHandler>()
+                .AddPolicyHandler(RetryAndCircuitBreakerPolicy.GetRetryPolicy())
+                .AddPolicyHandler(RetryAndCircuitBreakerPolicy.GetCircuitBreakerPolicy());
 
 
             services.AddControllers();
@@ -70,5 +82,7 @@ namespace Shopping.Aggregator
                 endpoints.MapControllers();
             });
         }
+
+
     }
 }

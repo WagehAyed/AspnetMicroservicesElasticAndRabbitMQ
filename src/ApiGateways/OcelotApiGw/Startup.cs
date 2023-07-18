@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Common.Logging;
 
 namespace OcelotApiGw
 {
@@ -21,6 +22,10 @@ namespace OcelotApiGw
         {
             services.AddOcelot()
                 .AddCacheManager(settings => settings.WithDictionaryHandle());
+
+
+            DistributeTracingService.Configure(services, nameof(IOcelotBuilder), "OcelotApiGw");
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

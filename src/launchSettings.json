@@ -5,7 +5,7 @@
       "commandVersion": "1.0",
       "composeLaunchAction": "LaunchBrowser",
       "composeLaunchServiceName": "catalog.api",
-      "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}/swagger",
+      "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}/swagger/index.html",
       "serviceActions": {
         "aspnetrunbasics": "StartDebugging",
         "basket.api": "StartDebugging",
@@ -22,7 +22,10 @@
         "portainer": "StartWithoutDebugging",
         "rabbitmq": "StartWithoutDebugging",
         "shopping.aggregator": "StartDebugging",
-        "webstatus": "StartDebugging"
+        "webstatus": "StartDebugging",
+        "elasticsearch": "StartWithoutDebugging",
+        "jaeger": "StartWithoutDebugging",
+        "kibana": "StartWithoutDebugging"
       }
     }
   }

@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Common.Logging;
 using Serilog;
+using Microsoft.Extensions.Logging;
+
 namespace Discount.API
 {
     public class Program
@@ -16,6 +18,13 @@ namespace Discount.API
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+           .ConfigureLogging(configureLogging =>
+           {
+               configureLogging.Configure(options =>
+               {
+                   options.ActivityTrackingOptions = ActivityTrackingOptions.TraceId | ActivityTrackingOptions.SpanId;
+               });
+           })
                         .UseSerilog(Serilogger.Configure)
 
                 .ConfigureWebHostDefaults(webBuilder =>

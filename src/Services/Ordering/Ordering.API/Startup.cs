@@ -1,3 +1,4 @@
+using Common.Logging;
 using EventBus.Messages.Common;
 using HealthChecks.UI.Client;
 using MassTransit;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Ordering.API.Controllers;
 using Ordering.API.EventBusConsumer;
 using Ordering.Application;
 using Ordering.Infrastructure;
@@ -61,6 +63,8 @@ namespace Ordering.API
             });
             services.AddHealthChecks()
                 .AddDbContextCheck<OrderContext>();
+
+            DistributeTracingService.Configure(services, nameof(OrderController), "Ordering.API");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

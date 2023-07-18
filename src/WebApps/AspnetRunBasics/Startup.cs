@@ -44,6 +44,14 @@ namespace AspnetRunBasics
             services.AddRazorPages();
             services.AddHealthChecks()
                 .AddUrlGroup(new Uri(Configuration["ApiSettings:GatewayAddress"]),"ocelot ApI Gateway",HealthStatus.Degraded) ;
+
+
+
+            DistributeTracingService.Configure(services, nameof(CatalogService), "aspnetApp.API");
+            DistributeTracingService.Configure(services, nameof(BasketService), "aspnetApp.API"); 
+            DistributeTracingService.Configure(services, nameof(OrderService), "aspnetApp.API");
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

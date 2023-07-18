@@ -1,3 +1,5 @@
+using Common.Logging;
+using Discount.API.Controllers;
 using Discount.API.Repositories;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
@@ -36,6 +38,7 @@ namespace Discount.API
             });
             services.AddHealthChecks()
                 .AddNpgSql(Configuration["DatabaseSettings:ConnectionString"]);
+            DistributeTracingService.Configure(services, nameof(DiscountController), "Discount.API");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

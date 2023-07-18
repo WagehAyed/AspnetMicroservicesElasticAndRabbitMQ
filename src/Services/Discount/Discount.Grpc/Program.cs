@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Common.Logging;
 using Serilog;
+using Microsoft.Extensions.Logging;
+
 namespace Discount.Grpc
 {
     public class Program
@@ -18,7 +20,14 @@ namespace Discount.Grpc
         // For instructions on how to configure Kestrel and gRPC clients on macOS, visit https://go.microsoft.com/fwlink/?linkid=2099682
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                        .UseSerilog(Serilogger.Configure)
+             .ConfigureLogging(configureLogging =>
+             {
+                 configureLogging.Configure(options =>
+                 {
+                     options.ActivityTrackingOptions = ActivityTrackingOptions.TraceId | ActivityTrackingOptions.SpanId;
+                 });
+             })
+                    .UseSerilog(Serilogger.Configure)
 
                 .ConfigureWebHostDefaults(webBuilder =>
                 {

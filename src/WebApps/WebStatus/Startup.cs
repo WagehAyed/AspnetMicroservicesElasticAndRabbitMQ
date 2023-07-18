@@ -1,3 +1,4 @@
+using Common.Logging;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -7,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebStatus.Controllers;
 
 namespace WebStatus
 {
@@ -25,6 +27,8 @@ namespace WebStatus
             services.AddControllersWithViews();
             services.AddHealthChecksUI()
                 .AddInMemoryStorage();
+
+            DistributeTracingService.Configure(services, nameof(HomeController), "aspnetApp.API");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

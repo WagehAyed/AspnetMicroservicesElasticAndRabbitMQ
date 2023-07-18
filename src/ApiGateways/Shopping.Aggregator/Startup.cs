@@ -13,6 +13,7 @@ using Microsoft.OpenApi.Models;
 using Polly;
 using Polly.Extensions.Http;
 using Serilog;
+using Shopping.Aggregator.Controllers;
 using Shopping.Aggregator.Services;
 using System;
 using System.Collections.Generic;
@@ -69,6 +70,9 @@ namespace Shopping.Aggregator
                 .AddUrlGroup(new Uri($"{Configuration["ApiSettings:BasketUrl"]}/swagger/index.html"), "Basket.Api", HealthStatus.Degraded)
                 .AddUrlGroup(new Uri($"{Configuration["ApiSettings:OrderingUrl"]}/swagger/index.html"), "Ordering.Api", HealthStatus.Degraded)
                 ;
+
+            DistributeTracingService.Configure(services, nameof(ShoppingController), "Shopping.Aggregator");
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

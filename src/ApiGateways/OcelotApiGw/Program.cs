@@ -28,6 +28,13 @@ namespace OcelotApiGw
                 {
                     webBuilder.UseStartup<Startup>();
                 })
+             .ConfigureLogging(loggingBuilder =>
+             {
+                 loggingBuilder.Configure(options =>
+                 {
+                     options.ActivityTrackingOptions = ActivityTrackingOptions.TraceId | ActivityTrackingOptions.SpanId;
+                 });
+             })
             .UseSerilog(Serilogger.Configure);
         //.ConfigureLogging((hostingContext, loggingbuilder) =>
         //{

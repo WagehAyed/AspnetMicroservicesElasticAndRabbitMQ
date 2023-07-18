@@ -26,6 +26,13 @@ namespace Ordering.API
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+             .ConfigureLogging(loggingBuilder =>
+             {
+                 loggingBuilder.Configure(options =>
+                 {
+                     options.ActivityTrackingOptions = ActivityTrackingOptions.TraceId | ActivityTrackingOptions.SpanId;
+                 });
+             })
                 .UseSerilog(Serilogger.Configure)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {

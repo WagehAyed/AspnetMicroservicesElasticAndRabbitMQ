@@ -4,7 +4,7 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using System;
 using System.Reflection;
-
+using Microsoft.Extensions.Logging;
 namespace AspnetRunBasics
 {
     public class Program
@@ -15,9 +15,16 @@ namespace AspnetRunBasics
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
-           
-            
+
+
             Host.CreateDefaultBuilder(args)
+             .ConfigureLogging(loggingBuilder =>
+             {
+                 loggingBuilder.Configure(options =>
+                 {
+                     options.ActivityTrackingOptions = ActivityTrackingOptions.TraceId | ActivityTrackingOptions.SpanId;
+                 });
+             })
                 .UseSerilog(Serilogger.Configure)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {

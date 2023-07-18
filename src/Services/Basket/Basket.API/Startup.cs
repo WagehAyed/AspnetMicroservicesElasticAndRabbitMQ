@@ -1,3 +1,4 @@
+using Basket.API.Controllers;
 using Basket.API.GrpcServices;
 using Basket.API.Repositories;
 using Discount.Grpc.Protos;
@@ -10,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using System;
 
 namespace Basket.API
@@ -61,6 +64,26 @@ namespace Basket.API
                 Configuration["CacheSettings:ConnectionString"],
                 "Redis Health",
                 HealthStatus.Degraded);
+
+            services.AddOpenTelemetryTracing(builder =>
+                {
+                    builder
+                    .AddAspNetCoreInstrumentation()
+                    .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("Basket.API"))
+                    .AddHttpClientInstrumentation()
+                    .AddSource(nameof(BasketController))
+                    .AddJaegerExporter(options =>
+                    {
+                        options.AgentHost = "localhost";
+                        options.AgentPort = 6831;
+                        options.ExportProcessorType = OpenTelemetry.ExportProcessorType.Simple;
+
+                    })
+                    .AddConsoleExporter(options =>
+                    {
+                        options.Targets = OpenTelemetry.Exporter.ConsoleExporterOutputTargets.Console;
+                    });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

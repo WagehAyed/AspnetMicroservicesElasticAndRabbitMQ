@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging; 
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +19,13 @@ namespace Catalog.API
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+             .ConfigureLogging(loggingBuilder =>
+             {
+                 loggingBuilder.Configure(options =>
+                 {
+                     options.ActivityTrackingOptions = ActivityTrackingOptions.TraceId | ActivityTrackingOptions.SpanId;
+                 });
+             })
                         .UseSerilog(Serilogger.Configure)
 
                 .ConfigureWebHostDefaults(webBuilder =>
